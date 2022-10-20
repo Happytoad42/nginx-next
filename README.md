@@ -1,24 +1,27 @@
 # Простое приложение на NextJS, статику раздает NGINX, все внутри докер-контейнеров
 
-## Как запустить
+## 1. Запуск при помощи docker-compose
 
-### 1. При помощи docker-compose
+Выполнить **docker-compose up**
 
-Выполнить docker-compose up
+Теперь можно пройти по адресу **http://localhost** (без порта, по дефолту торчит на 80 порте)
 
-Теперь можно пройти по адресу http://localhost (без порта, по дефолту торчит на 80 порте)
+## 2. Запуск без docker-compose
 
-### 2. Без docker-compose
+### Соберем образы
 
-**Соберем образы**
 docker build --tag nextjs-image .
+
 docker build --tag nginx-image ./nginx
 
-**Создадим общую сеть**
+### Создадим общую сеть
+
 docker network create my-network
 
-**Запустим контейнеры**
+### Запустим контейнеры
+
 docker run --network my-network --name nextjs-container nextjs-image
+
 docker run --network my-network --link nextjs-container:nextjs --publish 80:80 nginx-image
 
 ## Про кеширование
